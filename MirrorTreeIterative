@@ -1,0 +1,63 @@
+//Convert a binary tree into its mirror tree in java
+//Iterative Solution
+//Visit https://medium.com/@icshacks for explanation and solution to other problems.
+@author icshacks
+
+
+
+import java.util.*;
+public class MirrorTree {
+	static class Node {
+		int data;
+		Node leftChild;
+		Node rightChild;
+		
+		Node(int data) {
+			this.data = data;
+			leftChild = rightChild = null;
+		}
+	}
+	Node root;
+	MirrorTree() {
+		root = null;
+	}
+	public static void inorderTraversal(Node root) {
+		if(root!=null) {
+			inorderTraversal(root.leftChild);
+			System.out.print(root.data+" ");
+			inorderTraversal(root.rightChild);
+		}
+	}
+	public static void mirrorTree(MirrorTree mirror) {
+		Queue<Node> queue = new LinkedList<Node>();
+		queue.add(mirror.root);
+		while(queue.size() > 0) {
+			Node curr = queue.poll();
+			
+			Node temp = curr.leftChild;
+			curr.leftChild = curr.rightChild;
+			curr.rightChild = temp;
+			
+			if(curr.leftChild != null)
+				queue.add(curr.leftChild);
+			if(curr.rightChild != null)
+				queue.add(curr.rightChild);
+		}
+	}
+	public static void main(String[] args) {
+		Scanner s = new Scanner(System.in);
+		MirrorTree mirror = new MirrorTree();
+		mirror.root = new Node(14);
+		mirror.root.leftChild = new Node(18);
+		mirror.root.rightChild = new Node(58);
+		mirror.root.leftChild.leftChild = new Node(13);
+		mirror.root.rightChild.leftChild = new Node(112);
+		mirror.root.rightChild.rightChild = new Node(124);
+		System.out.print("Inorder Traversal before mirroring : ");
+		mirror.inorderTraversal(mirror.root);
+		System.out.println();
+		mirror.mirrorTree(mirror);
+		System.out.print("Inorder Traversal after mirroring : ");
+		mirror.inorderTraversal(mirror.root);
+	}
+}
